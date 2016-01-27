@@ -1084,15 +1084,15 @@ A [material design implementation of a data table](https://www.google.com/design
 					if(this.resizeBehavior == 'fixed'){
 						if(this._columns.length > 0){
 
-							var ths = Polymer.dom(this.root).querySelectorAll('th');
-							ths.forEach(function(th){
-								if(th.dataColumn){
-									var column = th.dataColumn;
-									if(th.scrollWidth > th.offsetWidth){
-										column.set('tooltip', column.header);
-									}else{
-										column.set('tooltip', '');
-									}
+						var ths = Polymer.dom(this.root).querySelectorAll('th');
+						ths.forEach(function(th) {
+							if(th.dataColumn){
+								console.dir(th);
+								var column = th.dataColumn;
+								if(th.scrollWidth > th.offsetWidth){
+									column.set('tooltip', column.header);
+								}else{
+									column.set('tooltip', '');
 								}
 							});
 
