@@ -510,7 +510,7 @@ A [material design implementation of a data table](https://www.google.com/design
 
 				_queryAndSetColumns: function(){
 					var columns = this.queryAllEffectiveChildren('paper-datatable-column');
-					columns.forEach(function(column) {
+					columns.forEach(function(column){
 						if(!column.beenAttached.state.ready){
 							column.parentNodeRef = this;
 							this.async(function(){
@@ -519,7 +519,7 @@ A [material design implementation of a data table](https://www.google.com/design
 							});
 						}
 					});
-					this.set('_columns', columns.filter(function(column){ !column.inactive }));
+					this.set('_columns', columns.filter(function(column) { return !column.inactive}));
 					this.async(function(){
 						this._applySortedIndicatorsToDOM();
 					});
@@ -564,7 +564,7 @@ A [material design implementation of a data table](https://www.google.com/design
 					var cells = Polymer.dom(this.root).querySelectorAll('.bound-cell');
 					cells.forEach(this._resetCell.bind(this));
 					this.$.rowRepeat.render();
-					Polymer.dom(this.root).querySelectorAll('#cellRepeat').forEach(function(cr){ return cr.render() });
+					Polymer.dom(this.root).querySelectorAll('#cellRepeat').forEach(function(cr){ cr.render() });
 				},
 
 				_resetCell: function(cell){
@@ -645,7 +645,7 @@ A [material design implementation of a data table](https://www.google.com/design
 						//not too happy about this 'hack', but it will have to do for the moment
 						var cells = Polymer.dom(this.root).querySelectorAll('.bound-cell');
 						if(cells.length > 0){
-							cells.forEach(function(cell) { cell.setAttribute('data-row-key', '')});
+							cells.forEach(function(cell){ cell.setAttribute('data-row-key', '')});
 							this._restructureData();
 						}
 					}
@@ -1085,7 +1085,7 @@ A [material design implementation of a data table](https://www.google.com/design
 						if(this._columns.length > 0){
 
 							var ths = Polymer.dom(this.root).querySelectorAll('th');
-							ths.forEach(function(th) {
+							ths.forEach(function(th){
 								if(th.dataColumn){
 									var column = th.dataColumn;
 									if(th.scrollWidth > th.offsetWidth){

@@ -148,8 +148,8 @@
 			};
 
 			app.deleteSelected = function(){
-				app.selectedIds.forEach((id) => {
-					var index = users.findIndex((item) => id == item.id);
+				app.selectedIds.forEach(function(id){
+					var index = users.findIndex(function(item){ return id == item.id });
 					users.splice(index, 1);
 				});
 				this.$.datatableCard.retrieveVisibleData();

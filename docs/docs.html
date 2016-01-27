@@ -140,7 +140,7 @@
 							body: currentSectionLines.join("\n"),
 							anchor: lastLineOfPrevSection.replace(/[\<\>\n\r]/g,'').replace(/ /g,'-').toLowerCase()
 						};
-					}).filter((section) => typeof section !== 'undefined');
+					}).filter(function(section){ return typeof section !== 'undefined'});
 					console.log(app.sections);
 				}
 			}
@@ -148,7 +148,7 @@
 		var page = location.search.replace('?', '');
 		var hashToTitle = function(hash){
 			var normalWords = ['with'];
-			return hash.split('-').map((word) => normalWords.indexOf(word) == -1 ? word.substr(0,1).toUpperCase() + word.substr(1, word.length -1) : word).join(' ');
+			return hash.split('-').map(function(word) {return normalWords.indexOf(word) == -1 ? word.substr(0,1).toUpperCase() + word.substr(1, word.length -1) : word}).join(' ');
 		}
 		document.title = hashToTitle(page);
 		httpRequest.open('GET', '../docs/'+page+'.md');
