@@ -142,14 +142,14 @@
 									return 0;
 								});
 							}
-							resolve(users.slice((page-1)*pageSize, page*pageSize).map((item) => item.id));
+							resolve(users.slice((page-1)*pageSize, page*pageSize).map(function(item) { return item.id}));
 						}, Math.random() * 100);
 					});
 				},
 				getByIds: function(ids){
 					return new Promise(function(resolve, reject){
 						setTimeout(function(){
-							resolve(users.filter((user) => ids.indexOf(user.id) > -1 ));
+							resolve(users.filter(function(user) { return ids.indexOf(user.id) > -1; } ));
 						}, Math.random() * 500);
 					});
 				},
@@ -184,8 +184,8 @@
 			};
 
 			app.deleteSelected = function(){
-				app.selectedIds.forEach((id) => {
-					var index = users.findIndex((item) => id == item.id);
+				app.selectedIds.forEach(function(id){
+					var index = users.findIndex(function(item){ id == item.id});
 					users.splice(index, 1);
 				});
 				this.$.datatableCard.retrieveVisibleData();
