@@ -56,7 +56,7 @@ window.db = {
 			return new Promise(function (resolve, reject) {
 				data.whenReady(function (users) {
 					setTimeout(function(){
-						resolve(users.filter((user) => like.indexOf(user.id) > -1 ));
+						resolve(users.filter(function(user){ return like.indexOf(user.id) > -1} ));
 					}, Math.random() * 500);
 				});
 			});
@@ -100,7 +100,7 @@ window.db = {
 							});
 						}
 						if (columns === 'id') {
-							resolve(searchedUsers.slice(skip, limit).map((item) => item.id));
+							resolve(searchedUsers.slice(skip, limit).map(function(item){ return item.id}));
 						} else if (columns === '*') {
 							resolve(searchedUsers.slice(skip, limit));
 						} else {
