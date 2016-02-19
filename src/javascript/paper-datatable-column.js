@@ -1,30 +1,10 @@
-<script src="../whenever.js/whenever.js"></script>
-<dom-module id="paper-datatable-column">
-	<template>
-    <style type="text/css">:host {
-  display: block; }
-</style>
-		<template id="arrayTemplate">
-			<template is="dom-repeat" items="{{value}}" as="arrayItem">
-				<div class="array-item">{{_pdt_getArrayItemLabel(column, arrayItem)}}</div>
-			</template>
-		</template>
-		<template id="editableInputTemplate">
-			<paper-input type="[[_pdt_getCorrectTypeForInput(column.type)]]" value="{{value}}" step="any" no-label-float></paper-input>
-		</template>
-		<template id="editableBooleanTemplate">
-			<paper-checkbox checked="{{value}}"></paper-checkbox>
-		</template>
-	</template>
-
-  <script>'use strict';
-
 (function () {
   'use strict';
 
   /*
-  This element is used inside of `<paper-datatable>` to declare the columns to be shown in the datatable.
-  @element paper-datatable-column
+This element is used inside of `<paper-datatable>` to declare the columns to be shown in the datatable.
+
+@element paper-datatable-column
   */
 
   Polymer({
@@ -157,12 +137,12 @@
        */
       _styleString: {
         type: String,
-        value: function value() {
+        value: function(){
           var alignment = this.align || this.getAttribute('align') || 'left';
           var minWidth = this.width || this.getAttribute('width') || 0;
           minWidth += parseFloat(minWidth).toString() === minWidth ? 'px' : '';
           var styleString = this.getAttribute('style') || '';
-          return 'text-align:' + alignment + ';min-width:' + minWidth + ';' + styleString;
+          return 'text-align:'+alignment+';min-width:'+minWidth+';'+styleString;
         }
       },
       /**
@@ -248,26 +228,28 @@
        */
       width: Object
     },
-    behaviors: [Polymer.Templatizer],
+    behaviors: [
+      Polymer.Templatizer
+    ],
 
-    created: function created() {
+    created: function(){
       this.beenAttached = new Whenever();
     },
 
-    ready: function ready() {
+    ready: function() {
 
       var template = Polymer.dom(this).querySelector('template');
-      if (!template && this.type.toLowerCase() == 'array') {
+      if(!template && this.type.toLowerCase() == 'array'){
         var template = this.$.arrayTemplate;
-      } else if (!template && this.editable && this.type.toLowerCase() == 'string') {
+      }else if(!template && this.editable && this.type.toLowerCase() == 'string'){
         var template = this.$.editableInputTemplate;
-      } else if (!template && this.editable && this.type.toLowerCase() == 'number') {
+      }else if(!template && this.editable && this.type.toLowerCase() == 'number'){
         var template = this.$.editableInputTemplate;
-      } else if (!template && this.editable && this.type.toLowerCase() == 'boolean') {
+      }else if(!template && this.editable && this.type.toLowerCase() == 'boolean'){
         var template = this.$.editableBooleanTemplate;
       }
 
-      if (template) {
+      if(template) {
         this._instanceProps = {};
         this._instanceProps.item = true;
         this._instanceProps.value = true;
@@ -277,129 +259,131 @@
 
         this.template = true;
       }
+
+
     },
 
-    _createCellInstance: function _createCellInstance(model, notificationKey) {
-      if (typeof model[this.property] == 'undefined' && typeof this.default !== 'undefined') {
-        var instance = this.stamp({ item: model, column: this, value: this.default, _dataKey: notificationKey });
-      } else {
-        var instance = this.stamp({ item: model, column: this, value: model[this.property], _dataKey: notificationKey });
+    _createCellInstance: function(model, notificationKey){
+      if(typeof model[this.property] == 'undefined' && typeof this.default !== 'undefined'){
+        var instance = this.stamp({item: model, column:this, value: this.default, _dataKey: notificationKey});
+      }else{
+        var instance = this.stamp({item: model, column:this, value: model[this.property], _dataKey: notificationKey});
       }
       return instance;
     },
 
-    _formatValue: function _formatValue(data) {
+    _formatValue: function(data){
       data = this._cast(data);
-      if ('formatValue' in this) {
+      if('formatValue' in this){
         return this.formatValue(data);
       }
-      if (typeof data == 'undefined') {
+      if(typeof data == 'undefined'){
         return '';
       }
       var value = this._cast(data);
-      if (this.type.toLowerCase() == 'string') {
+      if(this.type.toLowerCase() == 'string'){
         return value;
-      } else if (this.type.toLowerCase() == 'number') {
+      }else if(this.type.toLowerCase() == 'number'){
         return value;
-      } else if (this.type.toLowerCase() == 'boolean') {
+      }else if(this.type.toLowerCase() == 'boolean'){
         return value ? 'Yes' : 'No';
-      } else if (this.type.toLowerCase() == 'date') {
-        var prependZero = function prependZero(val) {
+      }else if(this.type.toLowerCase() == 'date'){
+        var prependZero = function(val){
           return val < 10 ? '0' + val : val;
-        };
-        return value.getUTCFullYear() + '/' + prependZero(value.getUTCMonth() + 1) + '/' + prependZero(value.getUTCDate()) + '&nbsp;' + prependZero(value.getUTCHours()) + ':' + prependZero(value.getUTCMinutes()) + ':' + prependZero(value.getUTCSeconds());
-      } else {
+        }
+        return value.getUTCFullYear() +'/'+ prependZero(value.getUTCMonth()+1) +'/'+ prependZero(value.getUTCDate()) + '&nbsp;' + prependZero(value.getUTCHours()) + ':' + prependZero(value.getUTCMinutes()) + ':' + prependZero(value.getUTCSeconds());
+      }else{
         console.warn('Complex objects should implement their own template or format-value function.', data);
         return '?';
       }
     },
 
-    _sort: function _sort(valA, valB) {
+    _sort: function(valA, valB){
       valA = this._cast(valA);
       valB = this._cast(valB);
 
-      if ('sort' in this) {
+      if('sort' in this){
         return this.sort(valA, valB);
       }
 
-      if (valA < valB) return -1;
-      if (valA > valB) return 1;
+      if(valA < valB) return -1;
+      if(valA > valB) return 1;
       return 0;
     },
 
-    _cast: function _cast(value) {
-      if (typeof value === 'undefined') {
-        if (typeof this.default !== 'undefined') {
+    _cast: function(value){
+      if(typeof value === 'undefined'){
+        if(typeof this.default !== 'undefined'){
           value = JSON.parse(JSON.stringify(this.default));
-        } else {
+        }else{
           value = '';
         }
       }
 
-      if (this.type.toLowerCase() == 'string') {
+      if(this.type.toLowerCase() == 'string'){
         return value.toString();
-      } else if (this.type.toLowerCase() == 'number') {
+      }else if(this.type.toLowerCase() == 'number'){
         return parseFloat(value);
-      } else if (this.type.toLowerCase() == 'boolean') {
+      }else if(this.type.toLowerCase() == 'boolean'){
         return value ? true : false;
-      } else if (this.type.toLowerCase() == 'date') {
+      }else if(this.type.toLowerCase() == 'date'){
         return new Date(value);
-      } else {
+      }else{
         return value;
       }
     },
 
-    _sortChanged: function _sortChanged() {
-      if (this.sorted) {
-        this.beenAttached.whenReady(function () {
+    _sortChanged: function(){
+      if(this.sorted){
+        this.beenAttached.whenReady(function(){
           this.parentNodeRef.sort(this);
         }.bind(this));
       }
     },
 
-    _forwardParentProp: function _forwardParentProp(prop, value) {
-      console.warn('_forwardParentProp', arguments);
+    _forwardParentProp: function(prop, value){
+      console.warn('_forwardParentProp',arguments);
     },
-    _forwardParentPath: function _forwardParentPath(prop, value) {
-      console.warn('_forwardParentPath', arguments);
+    _forwardParentPath: function(prop, value){
+      console.warn('_forwardParentPath',arguments);
     },
 
-    _forwardInstanceProp: function _forwardInstanceProp(templateInstance, prop, value) {
+    _forwardInstanceProp: function(templateInstance, prop, value){
       var path = prop.split('.');
       var item = path.shift();
-      if (item == 'value') {
+      if(item == 'value'){
         var parentPath = ['data', templateInstance.get('_dataKey'), this.property];
         value = this._cast(value);
         //console.log('_forwardInstanceProp',arguments);
         //console.log('set', parentPath, 'to', value);
         this.parentNodeRef.set(parentPath, value);
-      } else if (item == 'item') {
-        console.warn('_forwardInstanceProp', arguments);
+      }else if(item == 'item'){
+        console.warn('_forwardInstanceProp',arguments);
       }
     },
 
-    _forwardInstancePath: function _forwardInstancePath(templateInstance, prop, value) {
+    _forwardInstancePath: function(templateInstance, prop, value){
       var path = prop.split('.');
       var item = path.shift();
-      if (item == 'value') {
+      if(item == 'value'){
         var parentPath = ['data', templateInstance.get('_dataKey'), this.property].concat(path);
-        if (path.length == 0) {
+        if(path.length == 0){
           value = this._cast(value);
         }
         //console.log(parentPath, path.join('.'), value)
         //console.log('_forwardInstancePath',arguments);
-      } else if (item == 'item') {
-          var parentPath = ['data', templateInstance.get('_dataKey')].concat(path);
-          //console.log(parentPath, value);
-          //console.log('_forwardInstancePath',arguments);
-        }
+      }else if(item == 'item'){
+        var parentPath = ['data', templateInstance.get('_dataKey')].concat(path);
+        //console.log(parentPath, value);
+        //console.log('_forwardInstancePath',arguments);
+      }
       //console.log('set', parentPath, 'to', value);
       this.parentNodeRef.set(parentPath, value);
     },
-    _requeryColumnList: function _requeryColumnList() {
+    _requeryColumnList: function(){
       //only trigger this if ready, anything before that point will be handled automatically during
       // initial initialization.
-      if (this.beenAttached.state.ready) {
+      if(this.beenAttached.state.ready){
         this.parentNodeRef._queryAndSetColumns();
       }
     },
@@ -407,28 +391,29 @@
     _getRootDataHost: function(){
       return this;
     },*/
-    _registerEvilFunctions: function _registerEvilFunctions() {
-      if (typeof this.dataHost === 'undefined' || typeof this.parentNodeRef.dataHost !== 'undefined') {
+    _registerEvilFunctions: function(){
+      if(typeof this.dataHost === 'undefined' || typeof this.parentNodeRef.dataHost !== 'undefined') {
         this.dataHost = this.parentNodeRef.dataHost;
-      } else if (typeof this.dataHost === 'undefined') {
-        console.warn('A hack is used to support some functionality of the `[editable]` and [`array-display-prop`] attribute. ' + 'This however requires the element to be located in a polymer element or `dom-bind`.');
+      }else if(typeof this.dataHost === 'undefined'){
+        console.warn('A hack is used to support some functionality of the `[editable]` and [`array-display-prop`] attribute. ' +
+            'This however requires the element to be located in a polymer element or `dom-bind`.')
       }
 
       this.dataHost._pdt_getArrayItemLabel = this._getArrayItemLabel;
       this.dataHost._pdt_getCorrectTypeForInput = this._getCorrectTypeForInput;
+
     },
-    _getArrayItemLabel: function _getArrayItemLabel(column, value) {
+    _getArrayItemLabel: function(column, value){
       return column.arrayDisplayProp ? value[column.arrayDisplayProp] : value;
     },
-    _getCorrectTypeForInput: function _getCorrectTypeForInput(type) {
-      if (type.toLowerCase() == 'string') {
+    _getCorrectTypeForInput: function(type){
+      if(type.toLowerCase() == 'string'){
         return 'string';
-      } else if (type.toLowerCase() == 'number') {
+      }else if(type.toLowerCase() == 'number'){
         return 'number';
       }
     }
 
-  });
-})();</script>
 
-</dom-module>
+  });
+})();
