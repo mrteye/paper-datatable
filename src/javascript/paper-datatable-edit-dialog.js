@@ -1,39 +1,3 @@
-<link rel="import" href="../polymer/polymer.html">
-<link rel="import" href="../paper-styles/paper-styles.html">
-<link rel="import" href="../paper-material/paper-material.html">
-<link rel="import" href="../iron-form/iron-form.html">
-<link rel="import" href="../iron-resizable-behavior/iron-resizable-behavior.html">
-<dom-module id="paper-datatable-edit-dialog">
-	<template>
-		<style type="text/css">:host {
-  position: absolute;
-  z-index: 10;
-  display: none; }
-
-:host([visible]) {
-  display: block; }
-
-paper-material {
-  position: absolute;
-  left: 0px;
-  top: 0px;
-  right: 0px;
-  min-width: 100px;
-  display: inline-block;
-  padding: 4px 24px;
-  background: var(--paper-datatable-edit-dialog-color, --paper-grey-50);
-  border-radius: 2px;
-  box-sizing: border-box;
-  @apply (--paper-datatable-edit-dialog); }
-</style>
-		<paper-material id="material" elevation="1">
-			<form is="iron-form" id="form" on-iron-form-presubmit="dismiss">
-				<content select="*"></content>
-			</form>
-		</paper-material>
-	</template>
-	<script>'use strict';
-
 /**
  * This shouldn't be showing up here, but I can't see to get this documentation system to ignore this file,
  * so just ignore it.
@@ -57,53 +21,56 @@ Polymer({
     }
   },
 
-  behaviors: [Polymer.IronResizableBehavior],
+  behaviors: [
+    Polymer.IronResizableBehavior
+  ],
 
   listeners: {
     'iron-resize': 'setLocationRelativeTo'
   },
 
-  ready: function ready() {
-    this.addEventListener('keyup', function (ev) {
+  ready: function(){
+    this.addEventListener('keyup', function(ev){
       var genericEvent = Polymer.dom(ev);
-      if (ev.keyCode == 13 && genericEvent.path[0].nodeName.toLowerCase() !== 'textarea') {
+      if(ev.keyCode == 13 && genericEvent.path[0].nodeName.toLowerCase() !== 'textarea'){
         this.dismiss();
       }
     }.bind(this));
-    document.body.addEventListener('click', function (ev) {
+    document.body.addEventListener('click', function(ev){
       var path = Polymer.dom(ev).path;
-      if (this.positionedRelativeTo && path.indexOf(this) == -1 && path.indexOf(this.positionedRelativeTo) == -1) {
+      if(this.positionedRelativeTo && path.indexOf(this) == -1 && path.indexOf(this.positionedRelativeTo) == -1){
         this.dismiss(ev);
       }
     }.bind(this));
   },
 
-  dismiss: function dismiss(ev) {
+  dismiss: function(ev){
     this.set('visible', undefined);
     this.positionedRelativeTo = undefined;
-    if (ev) ev.preventDefault();
+    if(ev)
+      ev.preventDefault();
   },
 
-  findFocus: function findFocus() {
-    var paperInput = Polymer.dom(this).querySelector('paper-input');
+  findFocus: function() {
+    var paperInput = Polymer.dom(this).querySelector('paper-input')
     if (paperInput) {
       paperInput.$.input.focus();
     }
-    var paperInput = Polymer.dom(this).querySelector('paper-textarea');
+    var paperInput = Polymer.dom(this).querySelector('paper-textarea')
     if (paperInput) {
       var position = paperInput.$.input.$.textarea.value.length;
       paperInput.$.input.$.textarea.focus();
       paperInput.$.input.$.textarea.setSelectionRange(position, position);
     }
-    var input = Polymer.dom(this).querySelector('input');
+    var input = Polymer.dom(this).querySelector('input')
     if (input) {
       input.focus();
     }
   },
 
-  setLocationRelativeTo: function setLocationRelativeTo() {
-    if (this.positionedRelativeTo) {
-      this.set('visible', true);
+  setLocationRelativeTo: function(){
+    if(this.positionedRelativeTo) {
+      this.set('visible', true)
       this.revealTime = Date.now();
       var relativeToParent = this.parentNode;
       while (relativeToParent !== window) {
@@ -125,5 +92,6 @@ Polymer({
     }
   }
 
-});</script>
-</dom-module>
+
+
+});
