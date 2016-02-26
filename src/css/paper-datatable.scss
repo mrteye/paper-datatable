@@ -40,7 +40,7 @@ th{
   -ms-user-select: none;
   -moz-user-select: none;
   user-select: none;
-  color: rgba(0,0,0, .54);
+  // color: rgba(0,0,0, .54);
   font-size:12px;
   transition: linear .1s color, padding-left .2s linear;
   box-sizing: border-box;
@@ -51,7 +51,7 @@ th:not([data-sortable]) iron-icon.sort{
 }
 th[data-sortable] iron-icon.sort {
   transition: transform .2s linear, width .2s linear, color .2s linear;
-  color: rgba(0,0,0, .26);
+  // color: rgba(0,0,0, .26);
   width: 0px;
   @apply(--paper-datatable-column-header-sort-icon-hover);
 }
@@ -63,14 +63,14 @@ th[data-sortable]:not([data-sorted]):hover iron-icon{
 }
 th[data-sortable][data-sorted], th[data-sortable]:hover{
   padding-left: 4px;
-  color: rgba(0,0,0, .87);
+  // color: rgba(0,0,0, .87);
   @apply(--paper-datatable-column-header-sorted);
 }
 th[data-sortable][data-sorted] iron-icon, th[data-sortable]:hover iron-icon{
   width: 24px;
 }
 th[data-sortable][data-sorted] iron-icon.sort{
-  color: rgba(0,0,0, .87);
+  // color: rgba(0,0,0, .87);
   @apply(--paper-datatable-column-header-sorted);
 }
 th[data-sortable]:not([data-sorted]) iron-icon{
@@ -96,7 +96,7 @@ tr th span{
 }
 td.bound-cell{
   font-size: 13px;
-  color: rgba(0,0,0,.87);
+  // color: rgba(0,0,0,.87);
   @apply(--paper-datatable-cell);
 }
 td.bound-cell div span{
