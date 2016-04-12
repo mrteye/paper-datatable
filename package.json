@@ -22,7 +22,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/David-Mulder/paper-datatable.git"
+    "url": "git+https://github.com/mrteye/paper-datatable-es5.git"
   },
   "author": "",
   "license": "ISC",
